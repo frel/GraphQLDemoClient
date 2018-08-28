@@ -1,0 +1,8 @@
+query AllItems {
+  version
+  allItems {
+    id
+    name
+    thumbnail
+  }
+}
