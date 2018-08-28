@@ -10,8 +10,9 @@ buildscript {
 
     ext {
         supportLibVersion = "27.1.1"
-        apolloVersion = "1.0.0-alpha"
+        apolloVersion = "1.0.0-alpha2"
         glideVersion = "4.7.1"
+        coroutinesVersion = "0.25.0"
     }
 
     repositories {
@@ -58,9 +59,12 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation "com.android.support.constraint:constraint-layout:1.1.2"
     implementation "com.apollographql.apollo:apollo-runtime:$apolloVersion"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.23.4'
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
     testImplementation 'junit:junit:4.12'
