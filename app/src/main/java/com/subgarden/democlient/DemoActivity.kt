@@ -4,6 +4,7 @@ package com.subgarden.democlient
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import android.widget.Toast
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         val apolloClient = try {
             ApolloClient.builder()
-                    .serverUrl("http://192.168.0.14:8080/graphql")
+                    .serverUrl("http://192.168.0.11:8080/graphql")
                     .okHttpClient(OkHttpClient())
                     .build()
         } catch (e: SocketTimeoutException) {
@@ -43,9 +44,15 @@ class MainActivity : AppCompatActivity() {
                 val allItems = response.data()?.allItems ?: emptyList()
                 withContext(UI) {
                     recyclerView.adapter = ImageAdapter(allItems, Glide.with(this@MainActivity))
+                    progressBar.visibility = View.GONE
                 }
             } catch (e: ApolloException) {
                 e.printStackTrace()
+                withContext(UI) {
+                    progressBar.visibility = View.GONE
+                    errorText.text = e.message
+                    errorText.visibility = View.VISIBLE
+                }
             }
         }
     }
