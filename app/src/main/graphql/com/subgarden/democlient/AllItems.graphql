@@ -1,8 +1,20 @@
-query AllItems {
+query items {
   version
-  allItems {
-    id
-    name
-    thumbnail
+  items {
+    __typename
+    ctype
+    title
+    subtitle
+    uuid
+    tags
+    description
+    creation_time
+    owner_uuid
+    ... on Wallpaper {
+      imageUrl
+    }
+      ... on Audio {
+      streamUri
+    }
   }
 }

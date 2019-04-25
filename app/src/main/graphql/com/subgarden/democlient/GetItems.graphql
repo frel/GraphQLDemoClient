@@ -1,8 +1,0 @@
-query GetItems($count: Int!){
-  version
-  allItems(first: $count) {
-    id
-    name
-    thumbnail
-  }
-}

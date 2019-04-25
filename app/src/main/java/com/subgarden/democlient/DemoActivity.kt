@@ -2,53 +2,60 @@
 package com.subgarden.democlient
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Toast
-import com.apollographql.apollo.ApolloCall
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import java.net.SocketTimeoutException
-import kotlin.coroutines.experimental.suspendCoroutine
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val IP_ADDRESS = "10.42.11.106"
+        const val PORT = "8080"
+    }
+
+    private val adapter by lazy { ItemsAdapter(Glide.with(this@MainActivity)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        recyclerView.adapter = adapter
 
         val apolloClient = try {
             ApolloClient.builder()
-                    .serverUrl("http://192.168.0.11:8080/graphql")
-                    .okHttpClient(OkHttpClient())
+                    .serverUrl("http://$IP_ADDRESS:$PORT/graphql")
+                    .okHttpClient(OkHttpClient.Builder().build())
                     .build()
         } catch (e: SocketTimeoutException) {
             Toast.makeText(this, "Unable to connect to server", Toast.LENGTH_LONG).show()
             return
         }
 
-        launch(CommonPool) {
+        val repository = ItemsRepository(apolloClient)
+
+        GlobalScope.launch {
             try {
-                val response = apolloClient.query(GetItemsQuery.builder().count(9).build()).execute()
-                val allItems = response.data()?.allItems ?: emptyList()
-                withContext(UI) {
-                    recyclerView.adapter = ImageAdapter(allItems, Glide.with(this@MainActivity))
+                val items = repository.getAllItems()
+                withContext(Main) {
+                    adapter.submitList(items)
                     progressBar.visibility = View.GONE
                 }
             } catch (e: ApolloException) {
                 e.printStackTrace()
-                withContext(UI) {
+                withContext(Main) {
                     progressBar.visibility = View.GONE
                     errorText.text = e.message
                     errorText.visibility = View.VISIBLE
@@ -57,17 +64,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-}
-
-@Throws(ApolloException::class)
-suspend fun <T> ApolloCall<T>.execute() = suspendCoroutine<Response<T>> { cont ->
-    enqueue(object: ApolloCall.Callback<T>() {
-        override fun onResponse(response: Response<T>) {
-            cont.resume(response)
-        }
-
-        override fun onFailure(e: ApolloException) {
-            cont.resumeWithException(e)
-        }
-    })
 }
