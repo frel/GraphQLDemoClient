@@ -1,4 +1,3 @@
-
 package com.subgarden.democlient
 
 import android.os.Bundle
@@ -8,24 +7,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.exception.ApolloException
 import com.bumptech.glide.Glide
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import java.net.SocketTimeoutException
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val IP_ADDRESS = "10.42.11.106"
+        const val IP_ADDRESS = "192.168.0.10"
         const val PORT = "8080"
     }
 
     private val adapter by lazy { ItemsAdapter(Glide.with(this@MainActivity)) }
+
+    private val disposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +33,9 @@ class MainActivity : AppCompatActivity() {
 
         val apolloClient = try {
             ApolloClient.builder()
-                    .serverUrl("http://$IP_ADDRESS:$PORT/graphql")
-                    .okHttpClient(OkHttpClient.Builder().build())
-                    .build()
+                .serverUrl("http://$IP_ADDRESS:$PORT/graphql")
+                .okHttpClient(OkHttpClient.Builder().build())
+                .build()
         } catch (e: SocketTimeoutException) {
             Toast.makeText(this, "Unable to connect to server", Toast.LENGTH_LONG).show()
             return
@@ -46,22 +43,24 @@ class MainActivity : AppCompatActivity() {
 
         val repository = ItemsRepository(apolloClient)
 
-        GlobalScope.launch {
-            try {
-                val items = repository.getAllItems()
-                withContext(Main) {
-                    adapter.submitList(items)
-                    progressBar.visibility = View.GONE
-                }
-            } catch (e: ApolloException) {
-                e.printStackTrace()
-                withContext(Main) {
-                    progressBar.visibility = View.GONE
-                    errorText.text = e.message
-                    errorText.visibility = View.VISIBLE
-                }
-            }
-        }
+        repository
+            .allItems()
+            .subscribe({
+                adapter.submitList(it)
+                progressBar.visibility = View.GONE
+            }, {
+                progressBar.visibility = View.GONE
+                errorText.text = it.message
+                errorText.visibility = View.VISIBLE
+            })
+            .let(disposable::add)
+
+    }
+
+    override fun onDestroy() {
+        disposable.clear()
+        super.onDestroy()
     }
 
 }
+
