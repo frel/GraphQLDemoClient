@@ -17,6 +17,22 @@ buildscript {
     }
 }
 
+apollo {
+    generateKotlinModels = true
+
+    // If using multiple schemas, all schemas must be explicitly listed:
+    service("demo") {
+        sourceFolder.set("com/subgarden/democlient/demo")
+        rootPackageName.set("com.subgarden.democlient.demo")
+    }
+
+    service("alternative") {
+        sourceFolder.set("com/subgarden/democlient/alternative")
+        rootPackageName.set("com.subgarden.democlient.alternative")
+    }
+
+}
+
 android {
 
     compileSdkVersion 29

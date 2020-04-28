@@ -1,3 +1,4 @@
+# This is a comment
 query items {
   version
   items {
@@ -8,12 +9,12 @@ query items {
     uuid
     tags
     description
-    creation_time
-    owner_uuid
+    creationTime
+    ownerUuid
     ... on Wallpaper {
       imageUrl
     }
-      ... on Audio {
+    ... on Audio {
       streamUri
     }
   }

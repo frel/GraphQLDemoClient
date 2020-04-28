@@ -1,0 +1,9 @@
+# This is a comment
+query itemsWithTitle {
+  version
+  items {
+    __typename
+    ctype
+    title
+  }
+}

@@ -82,7 +82,7 @@
               "isDeprecated": false
             },
             {
-              "name": "creation_time",
+              "name": "creationTime",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -91,7 +91,7 @@
               "isDeprecated": false
             },
             {
-              "name": "owner_uuid",
+              "name": "ownerUuid",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -254,7 +254,7 @@
               "isDeprecated": false
             },
             {
-              "name": "creation_time",
+              "name": "creationTime",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -263,7 +263,7 @@
               "isDeprecated": false
             },
             {
-              "name": "owner_uuid",
+              "name": "ownerUuid",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -419,7 +419,7 @@
               "isDeprecated": false
             },
             {
-              "name": "creation_time",
+              "name": "creationTime",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -428,7 +428,7 @@
               "isDeprecated": false
             },
             {
-              "name": "owner_uuid",
+              "name": "ownerUuid",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1178,6 +1178,5 @@
         }
       ]
     }
-  },
-  "errors": []
+  }
 }

@@ -1,8 +1,13 @@
 package com.subgarden.democlient
 
+import com.subgarden.democlient.demo.ItemsQuery
+
+/*
+* Example of a mapper from the GraphQL struct to the domain struct
+*/
 fun ItemsQuery.Item.toItem(): Item {
-    return when (this) {
-        is ItemsQuery.AsWallpaper -> {
+    return when {
+        asWallpaper != null -> {
             WallpaperItem(
                     uuid,
                     title,
@@ -10,15 +15,15 @@ fun ItemsQuery.Item.toItem(): Item {
                     tags,
                     description,
                     subtitle,
-                    creation_time,
-                    owner_uuid,
-                    imageUrl!!,
+                    creationTime,
+                    ownerUuid,
+                    asWallpaper.imageUrl!!,
                     "",
                     0,
                     0
             )
         }
-        is ItemsQuery.AsAudio -> {
+        asAudio != null -> {
             AudioItem(
                     uuid,
                     title,
@@ -26,9 +31,9 @@ fun ItemsQuery.Item.toItem(): Item {
                     tags,
                     description,
                     subtitle,
-                    creation_time,
-                    owner_uuid,
-                    streamUri,
+                    creationTime,
+                    ownerUuid,
+                    asAudio.streamUri,
                     0f,
                     null)
         }
