@@ -1,16 +1,34 @@
 # This is a comment
+fragment CommonItem on Item {
+  __typename
+  ctype
+  title
+  subtitle
+  uuid
+  tags
+  description
+  creationTime
+  ownerUuid
+}
+
 query items {
   version
   items {
-    __typename
-    ctype
-    title
-    subtitle
-    uuid
-    tags
-    description
-    creationTime
-    ownerUuid
+    ...CommonItem
+    ... on Wallpaper {
+      imageUrl
+    }
+    ... on Audio {
+      streamUri
+    }
+  }
+}
+
+# This is a comment
+query topFiveItems {
+  version
+  items(first: 5) {
+    ...CommonItem
     ... on Wallpaper {
       imageUrl
     }

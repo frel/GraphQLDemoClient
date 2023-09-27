@@ -275,6 +275,7 @@
               "isDeprecated": false
             }
           ],
+          "interfaces": [],
           "possibleTypes": [
             {
               "kind": "OBJECT",
@@ -312,7 +313,15 @@
             },
             {
               "name": "items",
-              "args": [],
+              "args": [
+                {
+                  "name": "first",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int"
+                  }
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "ofType": {
@@ -443,8 +452,11 @@
               "name": "imageUrl",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String"
+                "kind": "NON_NULL",
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
               },
               "isDeprecated": false
             },
@@ -495,10 +507,14 @@
           "fields": [
             {
               "name": "name",
+              "description": "The __Directive type represents a Directive that a server supports.",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String"
+                "kind": "NON_NULL",
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
               },
               "isDeprecated": false
             },
@@ -512,15 +528,30 @@
               "isDeprecated": false
             },
             {
+              "name": "isRepeatable",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean"
+                }
+              },
+              "isDeprecated": false
+            },
+            {
               "name": "locations",
               "args": [],
               "type": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "ofType": {
-                  "kind": "NON_NULL",
+                  "kind": "LIST",
                   "ofType": {
-                    "kind": "ENUM",
-                    "name": "__DirectiveLocation"
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "__DirectiveLocation"
+                    }
                   }
                 }
               },
@@ -528,7 +559,16 @@
             },
             {
               "name": "args",
-              "args": [],
+              "args": [
+                {
+                  "name": "includeDeprecated",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean"
+                  },
+                  "defaultValue": "false"
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "ofType": {
@@ -543,36 +583,6 @@
                 }
               },
               "isDeprecated": false
-            },
-            {
-              "name": "onOperation",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean"
-              },
-              "isDeprecated": true,
-              "deprecationReason": "Use `locations`."
-            },
-            {
-              "name": "onFragment",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean"
-              },
-              "isDeprecated": true,
-              "deprecationReason": "Use `locations`."
-            },
-            {
-              "name": "onField",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean"
-              },
-              "isDeprecated": true,
-              "deprecationReason": "Use `locations`."
             }
           ],
           "interfaces": []
@@ -593,6 +603,11 @@
               "isDeprecated": false
             },
             {
+              "name": "SUBSCRIPTION",
+              "description": "Indicates the directive is valid on subscriptions.",
+              "isDeprecated": false
+            },
+            {
               "name": "FIELD",
               "description": "Indicates the directive is valid on fields.",
               "isDeprecated": false
@@ -610,6 +625,11 @@
             {
               "name": "INLINE_FRAGMENT",
               "description": "Indicates the directive is valid on inline fragments.",
+              "isDeprecated": false
+            },
+            {
+              "name": "VARIABLE_DEFINITION",
+              "description": "Indicates the directive is valid on variable definitions.",
               "isDeprecated": false
             },
             {
@@ -745,7 +765,16 @@
             },
             {
               "name": "args",
-              "args": [],
+              "args": [
+                {
+                  "name": "includeDeprecated",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean"
+                  },
+                  "defaultValue": "false"
+                }
+              ],
               "type": {
                 "kind": "NON_NULL",
                 "ofType": {
@@ -842,6 +871,24 @@
                 "name": "String"
               },
               "isDeprecated": false
+            },
+            {
+              "name": "isDeprecated",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean"
+              },
+              "isDeprecated": false
+            },
+            {
+              "name": "deprecationReason",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String"
+              },
+              "isDeprecated": false
             }
           ],
           "interfaces": []
@@ -851,6 +898,15 @@
           "name": "__Schema",
           "description": "A GraphQL Introspection defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, the entry points for query, mutation, and subscription operations.",
           "fields": [
+            {
+              "name": "description",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String"
+              },
+              "isDeprecated": false
+            },
             {
               "name": "types",
               "description": "A list of all types supported by this server.",
@@ -1039,7 +1095,16 @@
             },
             {
               "name": "inputFields",
-              "args": [],
+              "args": [
+                {
+                  "name": "includeDeprecated",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean"
+                  },
+                  "defaultValue": "false"
+                }
+              ],
               "type": {
                 "kind": "LIST",
                 "ofType": {
@@ -1060,6 +1125,25 @@
                 "name": "__Type"
               },
               "isDeprecated": false
+            },
+            {
+              "name": "specifiedByURL",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String"
+              },
+              "isDeprecated": false
+            },
+            {
+              "name": "specifiedByUrl",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String"
+              },
+              "isDeprecated": true,
+              "deprecationReason": "This legacy name has been replaced by `specifiedByURL`"
             }
           ],
           "interfaces": []
@@ -1071,7 +1155,7 @@
           "enumValues": [
             {
               "name": "SCALAR",
-              "description": "Indicates this type is a scalar.",
+              "description": "Indicates this type is a scalar. \u0027specifiedByURL\u0027 is a valid field",
               "isDeprecated": false
             },
             {
@@ -1137,7 +1221,7 @@
         },
         {
           "name": "skip",
-          "description": "Directs the executor to skip this field or fragment when the `if`\u0027argument is true.",
+          "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
           "locations": [
             "FIELD",
             "FRAGMENT_SPREAD",
@@ -1159,10 +1243,12 @@
         },
         {
           "name": "deprecated",
-          "description": "Marks the field or enum value as deprecated",
+          "description": "Marks the field, argument, input field or enum value as deprecated",
           "locations": [
             "FIELD_DEFINITION",
-            "ENUM_VALUE"
+            "ARGUMENT_DEFINITION",
+            "ENUM_VALUE",
+            "INPUT_FIELD_DEFINITION"
           ],
           "args": [
             {
@@ -1173,6 +1259,26 @@
                 "name": "String"
               },
               "defaultValue": "\"No longer supported\""
+            }
+          ]
+        },
+        {
+          "name": "specifiedBy",
+          "description": "Exposes a URL that specifies the behaviour of this scalar.",
+          "locations": [
+            "SCALAR"
+          ],
+          "args": [
+            {
+              "name": "url",
+              "description": "The URL that specifies the behaviour of this scalar.",
+              "type": {
+                "kind": "NON_NULL",
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              }
             }
           ]
         }

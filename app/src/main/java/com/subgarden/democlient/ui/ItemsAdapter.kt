@@ -1,10 +1,17 @@
-package com.subgarden.democlient
+package com.subgarden.democlient.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.RequestManager
+import com.subgarden.democlient.R
+import com.subgarden.democlient.data.AudioItem
+import com.subgarden.democlient.data.Item
+import com.subgarden.democlient.data.WallpaperItem
+import com.subgarden.democlient.ui.AudioViewHolder
+import com.subgarden.democlient.ui.ItemViewHolder
+import com.subgarden.democlient.ui.WallpaperViewHolder
 
 
 class ItemsAdapter(

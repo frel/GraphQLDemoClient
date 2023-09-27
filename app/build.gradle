@@ -1,45 +1,47 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
+apply plugin: 'com.apollographql.apollo3'
 
-apply plugin: 'kotlin-android-extensions'
-
-apply plugin: 'com.apollographql.apollo'
 
 buildscript {
 
     repositories {
-        jcenter()
         google()
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
     }
     dependencies {
-        classpath "com.apollographql.apollo:apollo-gradle-plugin:${versions.apollo}"
+        classpath "com.apollographql.apollo3:apollo-gradle-plugin:${versions.apollo}"
     }
 }
 
 apollo {
-    generateKotlinModels = true
-
     // If using multiple schemas, all schemas must be explicitly listed:
     service("demo") {
-        sourceFolder.set("com/subgarden/democlient/demo")
-        rootPackageName.set("com.subgarden.democlient.demo")
+        schemaFile.set(file("src/main/graphql/com/subgarden/democlient/demo/schema.json"))
+        srcDir(file("src/main/graphql/com/subgarden/democlient/demo/"))
+        packageName.set("com.subgarden.democlient.demo")
+
     }
 
     service("alternative") {
-        sourceFolder.set("com/subgarden/democlient/alternative")
-        rootPackageName.set("com.subgarden.democlient.alternative")
+        schemaFile.set(file("src/main/graphql/com/subgarden/democlient/alternative/schema.json"))
+        srcDir(file("src/main/graphql/com/subgarden/democlient/alternative/"))
+        packageName.set("com.subgarden.democlient.alternative")
     }
 
 }
 
 android {
 
-    compileSdkVersion 29
+    namespace "com.subgarden.democlient"
+
+    compileSdk 33
     defaultConfig {
         applicationId "com.subgarden.democlient"
-        minSdkVersion 21
-        targetSdkVersion 29
+        minSdk 24
+        targetSdk 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -51,23 +53,25 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
     implementation "androidx.appcompat:appcompat:${versions.androidx.appcompat}"
     implementation "androidx.recyclerview:recyclerview:${versions.androidx.recyclerView}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintLayout}"
-
-    implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
-    implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
-
-    implementation "com.apollographql.apollo:apollo-runtime:${versions.apollo}"
-    implementation "com.apollographql.apollo:apollo-rx2-support:${versions.apollo}"
+    implementation "com.google.code.findbugs:jsr305:${versions.jsr305}"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
+    implementation "com.apollographql.apollo3:apollo-runtime:${versions.apollo}"
     implementation "com.squareup.okhttp3:okhttp:${versions.okHttp}"
 
     implementation "com.github.bumptech.glide:glide:${versions.glide}"
@@ -75,7 +79,7 @@ dependencies {
 
     compileOnly 'javax.annotation:jsr250-api:1.0'
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }

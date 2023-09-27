@@ -1,9 +1,11 @@
-package com.subgarden.democlient
+package com.subgarden.democlient.ui
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.RequestManager
+import com.subgarden.democlient.R
+import com.subgarden.democlient.data.WallpaperItem
 
 
 class WallpaperViewHolder(

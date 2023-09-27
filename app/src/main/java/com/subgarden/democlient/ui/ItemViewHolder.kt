@@ -1,4 +1,4 @@
-package com.subgarden.democlient
+package com.subgarden.democlient.ui
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
